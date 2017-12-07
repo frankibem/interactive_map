@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html ng-app="interactive-app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interactive map</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="./css/interactive.css" rel="stylesheet" />
+</head>
+
+<body ng-controller="texasCtrl">
+    <div id="map"></div>
+
+    <!-- Loading icon -->
+    <img ng-show="loading" class="loader" src="images/loading.gif" />
+
+    <div id="camp_list" class="container">
+        <div class="row justify-content-end">
+            <div class="col-6 col-md-3">
+                <select class="form-control" ng-model="mapCamp" ng-change="onMapCampChanged(mapCamp)"
+                        ng-options="camp.name for camp in camp_heroes">
+                    <option value="">Select a city</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="campHeroes" class="container" ng-if="currentCamp">
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    {{currentCamp.name}}
+                </h1>
+                <hr />
+            </div>
+
+            <div class="col-12 col-md-6" ng-repeat="hero in currentCamp.heroes">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>{{hero.name}}</h4>
+                    </div>
+                    <div class="col-12 col-md-3 justify-content-center">
+                        <img ng-src="{{hero.img_url ? hero.img_url : './images/placeholder.png'}}" width="99" height="132" />
+                    </div>
+                    <div class="col-9">
+                        <table class="table table-sm table-hover table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>Date of birth:</td>
+                                    <td>{{hero.dob}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Place of birth:</td>
+                                    <td>{{hero.pob}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Current residence:</td>
+                                    <td>{{hero.residence}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Dates of service:</td>
+                                    <td>{{hero.service_date}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Liberator rank:</td>
+                                    <td>{{hero.liberator_rank}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Service description:</td>
+                                    <td>
+                                        <p ng-repeat="desc in hero.service_desc">{{desc}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Units served in</td>
+                                    <td>
+                                        <p ng-repeat="unit in hero.units">{{unit}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Branch of service:</td>
+                                    <td>{{hero.service_branch}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Commanding officer:</td>
+                                    <td>{{hero.comm_officer}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Name of camp(s) liberated:</td>
+                                    <td>
+                                        <p ng-repeat="camp in hero.camps_liberated">{{camp}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Date(s) of liberation:</td>
+                                    <td>
+                                        <p ng-repeat="ldate in hero.liberation_dates">{{ldate}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Video:</td>
+                                    <td>
+                                        <a ng-if="hero.video_url" ng-href="{{hero.video_url}}" target="_blank">External Link</a>
+                                        <span ng-if="!hero.video_url">-</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" ng-if="($index + 1) % 2 == 0"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="./scripts/markerclusterer.js"></script>
+    <script src="./scripts/interactive/interactive.controller.js"></script>
+    <script src="./scripts/interactive/data.service.js"></script>
+    <script src="./scripts/interactive/map.service.js"></script>
+
+</body>
+</html>
